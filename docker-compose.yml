@@ -7,6 +7,7 @@ services:
       target: ${FRONTEND_BUILD_TARGET:-dev} # use "prod" for production
     volumes:
        - ./backend:/usr/src/app/backend
+       - /usr/src/app/backend/node_modules
     environment:
       - POSTGRES_HOST=db # name of the "db" service
       - POSTGRES_DB=bunny_books

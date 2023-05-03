@@ -1,0 +1,18 @@
+Dockerfile
+
+# dist folder, anyway Dockerfile should build its own
+build/
+
+# node_module, Dockerfile should install its own
+node_modules/
+
+# .env.local
+.env.local
+
+# README files
+README.md
+ISSUE_TEMPLATE.md
+CHANGELOG.md
+
+Dockerfile-ori
+docker-compose.yml
