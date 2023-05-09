@@ -39,7 +39,8 @@ services:
         args:
           REACT_APP_BASE_API: ${BACKEND_URL-http://books-api.local.bunnyshell.com:3080}
       volumes:
-        - ./frontend:/var/www/frontend:delegated
+        - ./frontend:/usr/src/app
+        - /usr/src/app/node_modules
       ports:
         - "8080:8080"
 

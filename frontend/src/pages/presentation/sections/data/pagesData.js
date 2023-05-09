@@ -63,6 +63,11 @@ export default [
     route: "/pages/apps/desktop-app",
   },
   {
+    image: `${imagesPrefix}/desktop.jpg`,
+    name: "Book App Page",
+    route: "/pages/apps/book-app",
+  },
+  {
     image: `${imagesPrefix}/single-article.jpg`,
     name: "Single Article Blog",
     route: "/pages/blogs/single-article",

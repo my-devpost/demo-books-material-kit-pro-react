@@ -52,6 +52,7 @@ import DesktopApp from "layouts/pages/apps/desktop-app";
 import SingleArticle from "layouts/pages/blogs/single-article";
 import Author from "layouts/pages/blogs/author";
 import VirtualRealityPage from "layouts/pages/extra/virtual-reality";
+import BookApp from "layouts/pages/apps/book-app";
 
 // Account
 import SignInBasicPage from "layouts/authentication/sign-in/basic";
@@ -167,6 +168,11 @@ const routes = [
             name: "desktop app",
             route: "/pages/apps/desktop-app",
             component: <DesktopApp />,
+          },
+          {
+            name: "book app",
+            route: "/pages/apps/book-app",
+            component: <BookApp />,
           },
         ],
       },
