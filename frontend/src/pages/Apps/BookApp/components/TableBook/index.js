@@ -79,7 +79,7 @@ Role.propTypes = {
   org: PropTypes.string.isRequired,
 };
 
-function TableOne() {
+function TableBook() {
   const { columns, rows } = {
     columns: [
       { name: "author", align: "left" },
@@ -260,4 +260,4 @@ function TableOne() {
   );
 }
 
-export default TableOne;
+export default TableBook;
