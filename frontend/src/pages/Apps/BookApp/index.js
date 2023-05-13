@@ -18,11 +18,11 @@ import BaseLayout from "layouts/sections/components/BaseLayout";
 import View from "layouts/sections/components/View";
 
 // Tables page components
-import TableOne from "layouts/sections/elements/tables/components/TableOne";
+// import TableOne from "layouts/sections/elements/tables/components/TableOne";
 import TableBook from "pages/Apps/BookApp/components/TableBook";
 
 // Tables page components code
-import tableOneCode from "layouts/sections/elements/tables/components/TableOne/code";
+// import tableOneCode from "layouts/sections/elements/tables/components/TableOne/code";
 import tableBookCode from "pages/Apps/BookApp/components/TableBook/code";
 
 function BookApp() {
@@ -37,9 +37,9 @@ function BookApp() {
       <View title="Table Book" code={tableBookCode}>
         <TableBook />
       </View>
-      <View title="Table One" code={tableOneCode}>
+      {/* <View title="Table One" code={tableOneCode}>
         <TableOne />
-      </View>
+      </View> */}
     </BaseLayout>
   );
 }
