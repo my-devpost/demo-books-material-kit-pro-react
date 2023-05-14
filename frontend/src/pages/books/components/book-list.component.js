@@ -159,9 +159,6 @@ export default class BookList extends Component {
                 <Link to={"/books/add"}>
                   <MKButton color="info"> Add Book </MKButton>
                 </Link>
-                <MKButton color="error" onClick={this.removeAllBooks}>
-                  Remove All Books
-                </MKButton>
                 {books.length > 0 ? (
                   <MKButton color="error" onClick={this.removeAllBooks}>
                     Remove All Books

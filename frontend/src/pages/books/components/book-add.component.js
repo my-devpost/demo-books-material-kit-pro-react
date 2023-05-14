@@ -1,7 +1,17 @@
-import React, { Component } from "react";
-import BookDataService from "../services/Book.service";
+import { Component } from "react";
+import { toast } from "react-toastify";
+import BookDataService from "../services/book.service";
+import PropTypes from "prop-types";
 
-export default class AddBook extends Component {
+import Grid from "@mui/material/Grid";
+import Container from "@mui/material/Container";
+import MKBox from "components/MKBox";
+import MKButton from "components/MKButton";
+import MKInput from "components/MKInput";
+
+import { withRouter } from "../common/with-router";
+
+class BookAdd extends Component {
   constructor(props) {
     super(props);
     this.onChangeTitle = this.onChangeTitle.bind(this);
@@ -12,44 +22,46 @@ export default class AddBook extends Component {
     this.state = {
       id: null,
       title: "",
-      description: "", 
-      published: false,
-
-      submitted: false
+      description: "",
+      available: false,
+      submitted: false,
     };
+
+    // this.navigate = useNavigate();
   }
 
   onChangeTitle(e) {
     this.setState({
-      title: e.target.value
+      title: e.target.value,
     });
   }
 
   onChangeDescription(e) {
     this.setState({
-      description: e.target.value
+      description: e.target.value,
     });
   }
 
   saveBook() {
-    var data = {
+    const data = {
       title: this.state.title,
-      description: this.state.description
+      description: this.state.description,
     };
 
     BookDataService.create(data)
-      .then(response => {
+      .then((response) => {
         this.setState({
           id: response.data.id,
           title: response.data.title,
           description: response.data.description,
-          published: response.data.published,
-
-          submitted: true
+          available: response.data.available,
+          submitted: false,
         });
+        this.props.router.navigate("/books");
+        toast.success(`The Book ${response.data.title} was added!`);
         console.log(response.data);
       })
-      .catch(e => {
+      .catch((e) => {
         console.log(e);
       });
   }
@@ -59,56 +71,67 @@ export default class AddBook extends Component {
       id: null,
       title: "",
       description: "",
-      published: false,
-
-      submitted: false
+      available: false,
+      submitted: false,
     });
   }
 
   render() {
+    const { submitted, title, description } = this.state;
+
     return (
-      <div className="submit-form">
-        {this.state.submitted ? (
-          <div>
-            <h4>You submitted successfully!</h4>
-            <button className="btn btn-success" onClick={this.newBook}>
-              Add
-            </button>
-          </div>
-        ) : (
-          <div>
-            <div className="form-group">
-              <label htmlFor="title">Title</label>
-              <input
-                type="text"
-                className="form-control"
-                id="title"
-                required
-                value={this.state.title}
-                onChange={this.onChangeTitle}
-                name="title"
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="description">Description</label>
-              <input
-                type="text"
-                className="form-control"
-                id="description"
-                required
-                value={this.state.description}
-                onChange={this.onChangeDescription}
-                name="description"
-              />
-            </div>
-
-            <button onClick={this.saveBook} className="btn btn-success">
-              Submit
-            </button>
-          </div>
-        )}
-      </div>
+      <>
+        <Grid container justifyContent="center" spacing={2}>
+          <Grid item lg={4}>
+            <MKBox py={12}>
+              <Container>
+                <MKBox component="form" role="form">
+                  <MKBox mb={2}>
+                    <MKInput label="Title" value={title} onChange={this.onChangeTitle} fullWidth />
+                  </MKBox>
+                  <MKBox mb={2}>
+                    <MKInput
+                      label="Description"
+                      value={description}
+                      onChange={this.onChangeDescription}
+                      fullWidth
+                    />
+                  </MKBox>
+                  <MKBox mt={4} mb={1}>
+                    <MKButton
+                      variant="gradient"
+                      color="info"
+                      size="large"
+                      onClick={this.saveBook}
+                      fullWidth
+                    >
+                      add book
+                    </MKButton>
+                  </MKBox>
+                </MKBox>
+                <div className="submit-form">
+                  {submitted ? (
+                    <div>
+                      <h4>The Book was added</h4>
+                      <button className="btn btn-success" onClick={this.newBook}>
+                        Add another Book
+                      </button>
+                    </div>
+                  ) : (
+                    ""
+                  )}
+                </div>
+              </Container>
+            </MKBox>
+          </Grid>
+        </Grid>
+      </>
     );
   }
 }
+
+BookAdd.propTypes = {
+  router: PropTypes.object,
+};
+
+export default withRouter(BookAdd);

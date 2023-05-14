@@ -38,17 +38,21 @@ Coded by www.creative-tim.com
 
 // @mui material components
 import Icon from "@mui/material/Icon";
+import Books from "layouts/pages/books";
+import BookAdd from "layouts/pages/book-add";
 
 const routes = [
   {
     name: "books",
     icon: <Icon>books</Icon>,
     route: "/books",
+    component: <Books />,
   },
   {
     name: "add book",
     icon: <Icon>note_add</Icon>,
-    route: "/sections/elements/typography",
+    route: "/books/add",
+    component: <BookAdd />,
   },
 ];
 
