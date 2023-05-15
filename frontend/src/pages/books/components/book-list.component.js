@@ -156,8 +156,6 @@ export default class BookList extends Component {
       });
     });
 
-    this.setActiveBook(books[6], 6);
-
     // const rows = [
     //   {
     //     book: <Book title="111" description="111" />,
@@ -218,7 +216,12 @@ export default class BookList extends Component {
                 </MKTypography>
               </Grid>
               <Grid item xs={12} lg={3} sx={{ mt: 2 }}>
-                <MKInput label="Search by title" value={searchTitle} fullWidth />
+                <MKInput
+                  label="Search by title"
+                  value={searchTitle}
+                  onChange={this.onChangeSearchTitle}
+                  fullWidth
+                />
               </Grid>
               <Grid item xs={12} lg={3} sx={{ mt: 2 }}>
                 <MKButton color="secondary" onClick={this.searchByTitle}>
