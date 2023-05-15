@@ -13,6 +13,31 @@ import Stack from "@mui/material/Stack";
 import MKTypography from "components/MKTypography";
 import MKInput from "components/MKInput";
 
+import PropTypes from "prop-types";
+import Table from "examples/Tables/Table";
+
+import MKAvatar from "components/MKAvatar";
+
+function Book({ title, description }) {
+  return (
+    <MKBox display="flex" alignItems="center" px={1} py={0.5}>
+      <MKBox display="flex" flexDirection="column" pl={1}>
+        <MKTypography variant="button" fontWeight="medium">
+          {title}
+        </MKTypography>
+        <MKTypography variant="caption" color="secondary">
+          {description}
+        </MKTypography>
+      </MKBox>
+    </MKBox>
+  );
+}
+
+Book.propTypes = {
+  title: PropTypes.string.isRequired,
+  description: PropTypes.string,
+};
+
 export default class BookList extends Component {
   constructor(props) {
     super(props);
@@ -104,6 +129,59 @@ export default class BookList extends Component {
   render() {
     const { searchTitle, books, currentBook, currentIndex } = this.state;
 
+    const columns = [
+      { name: "book", align: "left" },
+      { name: "action", align: "right" },
+    ];
+
+    const rows = [
+      {
+        book: <Book title="111" description="111" />,
+        action: (
+          <MKTypography
+            component="a"
+            href="/books/1"
+            variant="caption"
+            color="secondary"
+            fontWeight="medium"
+            pr={3}
+          >
+            Edit
+          </MKTypography>
+        ),
+      },
+      {
+        book: <Book title="111" description="111" />,
+        action: (
+          <MKTypography
+            component="a"
+            href="/books/2"
+            variant="caption"
+            color="secondary"
+            fontWeight="medium"
+            pr={3}
+          >
+            Edit
+          </MKTypography>
+        ),
+      },
+      {
+        book: <Book title="111" description="111" />,
+        action: (
+          <MKTypography
+            component="a"
+            href="/books/3"
+            variant="caption"
+            color="secondary"
+            fontWeight="medium"
+            pr={3}
+          >
+            Edit
+          </MKTypography>
+        ),
+      },
+    ];
+
     return (
       <>
         <MKBox component="section" py={12}>
@@ -123,6 +201,40 @@ export default class BookList extends Component {
                   Search
                 </MKButton>
               </Grid>
+            </Grid>
+            <Grid container justifyContent="center" py={5}>
+              <Container>
+                <Grid container item xs={12} lg={10} mx="auto">
+                  <MKAvatar src={nobooks} alt="bookname" shadow="md" variant="rounded" />
+                  <MKBox pl={2} lineHeight={0}>
+                    <MKTypography component="h6" variant="button" fontWeight="medium" gutterBottom>
+                      bookname
+                    </MKTypography>
+                    <MKTypography variant="caption" color="text">
+                      description
+                    </MKTypography>
+                  </MKBox>
+                </Grid>
+              </Container>
+            </Grid>
+            <Grid container justifyContent="center" py={5}>
+              {books.length > 0 ? (
+                <Container>
+                  <Grid container item xs={12} lg={10} mx="auto">
+                    <Table columns={columns} rows={rows} />
+                  </Grid>
+                </Container>
+              ) : (
+                <MKBox
+                  component="img"
+                  src={nobooks}
+                  alt="No books"
+                  maxWidth="15rem"
+                  width="100%"
+                  margin="10% 0"
+                  display={{ xs: "none", lg: "block" }}
+                />
+              )}
             </Grid>
             <Grid container justifyContent="center">
               <ul className="list-group">

@@ -6,7 +6,7 @@ import DefaultFooter from "examples/Footers/DefaultFooter";
 import routes from "routes-book";
 import footerRoutes from "footer.routes";
 
-import TableBook from "pages/Apps/BookApp/components/TableBook";
+// import TableBook from "pages/Apps/BookApp/components/TableBook";
 import BookList from "./components/book-list.component";
 
 function Books() {
@@ -25,7 +25,7 @@ function Books() {
       </MKBox>
       <BookList />
 
-      <TableBook> </TableBook>
+      {/* <TableBook> </TableBook> */}
 
       <MKBox pt={6} px={1} mt={6}>
         <DefaultFooter content={footerRoutes} />
