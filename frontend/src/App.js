@@ -30,6 +30,8 @@ import Book from "layouts/pages/book";
 // Material Kit 2 PRO React routes
 import routes from "routes-book";
 
+import { ToastContainer } from "react-toastify";
+
 export default function App() {
   const { pathname } = useLocation();
 
@@ -53,14 +55,17 @@ export default function App() {
     });
 
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Routes>
-        {getRoutes(routes)}
-        <Route path="/presentation" element={<Presentation />} />
-        <Route path="/books/:id" element={<Book />} />
-        <Route path="*" element={<Navigate to="/presentation" />} />
-      </Routes>
-    </ThemeProvider>
+    <>
+      <ToastContainer />
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Routes>
+          {getRoutes(routes)}
+          <Route path="/presentation" element={<Presentation />} />
+          <Route path="/books/:id" element={<Book />} />
+          <Route path="*" element={<Navigate to="/presentation" />} />
+        </Routes>
+      </ThemeProvider>
+    </>
   );
 }
