@@ -57,8 +57,8 @@ class BookAdd extends Component {
           available: response.data.available,
           submitted: false,
         });
-        this.props.router.navigate("/books");
         toast.success(`The Book ${response.data.title} was added!`);
+        this.props.router.navigate("/books");
         console.log(response.data);
       })
       .catch((e) => {

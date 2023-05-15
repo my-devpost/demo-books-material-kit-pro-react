@@ -1,6 +1,16 @@
 import React, { Component } from "react";
 import BookDataService from "../services/book.service";
-import { withRouter } from '../common/with-router';
+import { withRouter } from "../common/with-router";
+import PropTypes from "prop-types";
+import { toast } from "react-toastify";
+
+import Grid from "@mui/material/Grid";
+import Container from "@mui/material/Container";
+import MKBox from "components/MKBox";
+import MKButton from "components/MKButton";
+import MKInput from "components/MKInput";
+import MKTypography from "components/MKTypography";
+import Stack from "@mui/material/Stack";
 
 class Book extends Component {
   constructor(props) {
@@ -8,7 +18,7 @@ class Book extends Component {
     this.onChangeTitle = this.onChangeTitle.bind(this);
     this.onChangeDescription = this.onChangeDescription.bind(this);
     this.getBook = this.getBook.bind(this);
-    this.updatePublished = this.updatePublished.bind(this);
+    this.updateAvailable = this.updateAvailable.bind(this);
     this.updateBook = this.updateBook.bind(this);
     this.deleteBook = this.deleteBook.bind(this);
 
@@ -17,9 +27,9 @@ class Book extends Component {
         id: null,
         title: "",
         description: "",
-        published: false
+        available: false,
       },
-      message: ""
+      message: "",
     };
   }
 
@@ -30,86 +40,91 @@ class Book extends Component {
   onChangeTitle(e) {
     const title = e.target.value;
 
-    this.setState(function(prevState) {
+    this.setState(function (prevState) {
       return {
         currentBook: {
           ...prevState.currentBook,
-          title: title
-        }
+          title: title,
+        },
       };
     });
   }
 
   onChangeDescription(e) {
     const description = e.target.value;
-    
-    this.setState(prevState => ({
+
+    this.setState((prevState) => ({
       currentBook: {
         ...prevState.currentBook,
-        description: description
-      }
+        description: description,
+      },
     }));
   }
 
   getBook(id) {
     BookDataService.get(id)
-      .then(response => {
+      .then((response) => {
         this.setState({
-          currentBook: response.data
+          currentBook: response.data,
         });
         console.log(response.data);
       })
-      .catch(e => {
+      .catch((e) => {
         console.log(e);
       });
   }
 
-  updatePublished(status) {
+  updateAvailable(status) {
     var data = {
       id: this.state.currentBook.id,
       title: this.state.currentBook.title,
       description: this.state.currentBook.description,
-      published: status
+      available: status,
     };
 
     BookDataService.update(this.state.currentBook.id, data)
-      .then(response => {
-        this.setState(prevState => ({
+      .then((response) => {
+        this.setState((prevState) => ({
           currentBook: {
             ...prevState.currentBook,
-            published: status
-          }
+            available: status,
+          },
         }));
         console.log(response.data);
       })
-      .catch(e => {
+      .catch((e) => {
         console.log(e);
       });
   }
 
   updateBook() {
-    BookDataService.update(
-      this.state.currentBook.id,
-      this.state.currentBook
-    )
-      .then(response => {
+    BookDataService.update(this.state.currentBook.id, this.state.currentBook)
+      .then((response) => {
         console.log(response.data);
         this.setState({
-          message: "The book was updated successfully!"
+          message: "The book was updated successfully!",
         });
+
+        this.props.router.navigate("/books");
+        toast.success(`The Book was updated successfully`);
       })
-      .catch(e => {
+      .catch((e) => {
         console.log(e);
       });
   }
 
-  deleteBook() {    
+  deleteBook() {
     BookDataService.delete(this.state.currentBook.id)
-      .then(response => {
+      .then((response) => {
         console.log(response.data);
-        this.props.router.navigate('/books');
+        this.setState({
+          message: "The Book was deleted successfully",
+        });
+
+        this.props.router.navigate("/books");
+        toast.success(`The Book was deleted successfully`);
       })
-      .catch(e => {
+      .catch((e) => {
         console.log(e);
       });
   }
@@ -118,81 +133,152 @@ class Book extends Component {
     const { currentBook } = this.state;
 
     return (
-      <div>
+      <>
         {currentBook ? (
-          <div className="edit-form">
-            <h4>Book</h4>
-            <form>
-              <div className="form-group">
-                <label htmlFor="title">Title</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="title"
-                  value={currentBook.title}
-                  onChange={this.onChangeTitle}
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="description">Description</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="description"
-                  value={currentBook.description}
-                  onChange={this.onChangeDescription}
-                />
-              </div>
-
-              <div className="form-group">
-                <label>
-                  <strong>Status:</strong>
-                </label>
-                {currentBook.published ? "Published" : "Pending"}
-              </div>
-            </form>
-
-            {currentBook.published ? (
-              <button
-                className="badge badge-primary mr-2"
-                onClick={() => this.updatePublished(false)}
-              >
-                UnPublish
-              </button>
-            ) : (
-              <button
-                className="badge badge-primary mr-2"
-                onClick={() => this.updatePublished(true)}
-              >
-                Publish
-              </button>
-            )}
-
-            <button
-              className="badge badge-danger mr-2"
-              onClick={this.deleteBook}
-            >
-              Delete
-            </button>
-
-            <button
-              type="submit"
-              className="badge badge-success"
-              onClick={this.updateBook}
-            >
-              Update
-            </button>
-            <p>{this.state.message}</p>
-          </div>
+          <Grid container justifyContent="center" spacing={2}>
+            <Grid item lg={4}>
+              <MKBox py={12}>
+                <Container>
+                  <MKTypography display="block" variant="h3" fontWeight="bold" color="text" mb={5}>
+                    Book
+                  </MKTypography>
+                  <MKBox component="form" role="form">
+                    <MKBox mb={2}>
+                      <MKInput
+                        label="Title"
+                        value={currentBook.title}
+                        onChange={this.onChangeTitle}
+                        fullWidth
+                      />
+                    </MKBox>
+                    <MKBox mb={2}>
+                      <MKInput
+                        label="Description"
+                        value={currentBook.description}
+                        onChange={this.onChangeDescription}
+                        fullWidth
+                      />
+                    </MKBox>
+                    <MKBox mb={4}>
+                      <MKInput
+                        disabled
+                        label="Availability"
+                        value={currentBook.available ? "Available" : "Lent"}
+                        onChange={this.onChangeDescription}
+                        fullWidth
+                      />
+                    </MKBox>
+                    <Grid container justifyContent="center">
+                      <Stack direction="row" alignItems="flex-end" spacing={1}>
+                        <MKButton variant="gradient" color="success" onClick={this.updateBook}>
+                          update
+                        </MKButton>
+                        <MKButton variant="gradient" color="error" onClick={this.deleteBook}>
+                          delete
+                        </MKButton>
+                        {currentBook.available ? (
+                          <MKButton
+                            variant="gradient"
+                            color="info"
+                            onClick={() => this.updateAvailable(false)}
+                          >
+                            lent book
+                          </MKButton>
+                        ) : (
+                          <MKButton
+                            variant="gradient"
+                            color="info"
+                            onClick={() => this.updateAvailable(true)}
+                          >
+                            return to library
+                          </MKButton>
+                        )}
+                      </Stack>
+                    </Grid>
+                  </MKBox>
+                </Container>
+              </MKBox>
+            </Grid>
+          </Grid>
         ) : (
           <div>
             <br />
             <p>Please click on a Book...</p>
           </div>
         )}
-      </div>
+        <div>
+          {currentBook ? (
+            <div className="edit-form">
+              <h4>Book</h4>
+              <form>
+                <div className="form-group">
+                  <label htmlFor="title">Title</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="title"
+                    value={currentBook.title}
+                    onChange={this.onChangeTitle}
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="description">Description</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="description"
+                    value={currentBook.description}
+                    onChange={this.onChangeDescription}
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>
+                    <strong>Status:</strong>
+                  </label>
+                  {currentBook.published ? "Published" : "Pending"}
+                </div>
+              </form>
+
+              {currentBook.published ? (
+                <button
+                  className="badge badge-primary mr-2"
+                  onClick={() => this.updatePublished(false)}
+                >
+                  UnPublish
+                </button>
+              ) : (
+                <button
+                  className="badge badge-primary mr-2"
+                  onClick={() => this.updatePublished(true)}
+                >
+                  Publish
+                </button>
+              )}
+
+              <button className="badge badge-danger mr-2" onClick={this.deleteBook}>
+                Delete
+              </button>
+
+              <button type="submit" className="badge badge-success" onClick={this.updateBook}>
+                Update
+              </button>
+              <p>{this.state.message}</p>
+            </div>
+          ) : (
+            <div>
+              <br />
+              <p>Please click on a Book...</p>
+            </div>
+          )}
+        </div>
+      </>
     );
   }
 }
+
+Book.propTypes = {
+  router: PropTypes.object,
+};
 
 export default withRouter(Book);
