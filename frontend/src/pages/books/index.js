@@ -14,8 +14,8 @@ function Books() {
     <>
       <MKBox variant="gradient" bgColor="dark" shadow="sm" py={0.25}>
         <DefaultNavbar
-          brand="Book App"
-          path="/books"
+          brand="Material Kit 2"
+          path="/"
           routes={routes}
           transparent
           relative

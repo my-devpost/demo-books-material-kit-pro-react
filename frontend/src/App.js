@@ -28,7 +28,7 @@ import Presentation from "layouts/pages/presentation";
 import Book from "layouts/pages/book";
 
 // Material Kit 2 PRO React routes
-import routes from "routes-book";
+import routes from "routes-all";
 
 import { ToastContainer } from "react-toastify";
 

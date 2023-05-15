@@ -99,7 +99,9 @@ import Tables from "layouts/sections/elements/tables";
 import Toggles from "layouts/sections/elements/toggles";
 import Typography from "layouts/sections/elements/typography";
 
+// books
 import Books from "layouts/pages/books";
+import BookAdd from "layouts/pages/book-add";
 
 const routes = [
   {
@@ -498,6 +500,18 @@ const routes = [
         name: "plugins",
         description: "Check how you can integrate our plugins",
         href: "https://www.creative-tim.com/learning-lab/react/datepicker/material-kit/",
+      },
+      {
+        name: "books",
+        icon: <Icon>books</Icon>,
+        route: "/books",
+        component: <Books />,
+      },
+      {
+        name: "add book",
+        icon: <Icon>note_add</Icon>,
+        route: "/books/add",
+        component: <BookAdd />,
       },
     ],
   },
