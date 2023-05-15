@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import nobooks from "../assets/nobooks.png";
+import cover from "../assets/not-available.png";
 
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
@@ -127,20 +128,22 @@ export default class BookList extends Component {
   }
 
   render() {
-    const { searchTitle, books, currentBook, currentIndex } = this.state;
+    // const { searchTitle, books, currentBook, currentIndex } = this.state;
+    const { searchTitle, books, currentBook } = this.state;
 
     const columns = [
       { name: "book", align: "left" },
       { name: "action", align: "right" },
     ];
 
-    const rows = [
-      {
-        book: <Book title="111" description="111" />,
+    let rows = [];
+    books.map((book, index) => {
+      rows.push({
+        book: <Book title={book.title} description={book.description} />,
         action: (
           <MKTypography
             component="a"
-            href="/books/1"
+            href={"/books/" + book.id}
             variant="caption"
             color="secondary"
             fontWeight="medium"
@@ -149,38 +152,59 @@ export default class BookList extends Component {
             Edit
           </MKTypography>
         ),
-      },
-      {
-        book: <Book title="111" description="111" />,
-        action: (
-          <MKTypography
-            component="a"
-            href="/books/2"
-            variant="caption"
-            color="secondary"
-            fontWeight="medium"
-            pr={3}
-          >
-            Edit
-          </MKTypography>
-        ),
-      },
-      {
-        book: <Book title="111" description="111" />,
-        action: (
-          <MKTypography
-            component="a"
-            href="/books/3"
-            variant="caption"
-            color="secondary"
-            fontWeight="medium"
-            pr={3}
-          >
-            Edit
-          </MKTypography>
-        ),
-      },
-    ];
+        key: { index },
+      });
+    });
+
+    this.setActiveBook(books[6], 6);
+
+    // const rows = [
+    //   {
+    //     book: <Book title="111" description="111" />,
+    //     action: (
+    //       <MKTypography
+    //         component="a"
+    //         href="/books/1"
+    //         variant="caption"
+    //         color="secondary"
+    //         fontWeight="medium"
+    //         pr={3}
+    //       >
+    //         Edit
+    //       </MKTypography>
+    //     ),
+    //   },
+    //   {
+    //     book: <Book title="111" description="111" />,
+    //     action: (
+    //       <MKTypography
+    //         component="a"
+    //         href="/books/2"
+    //         variant="caption"
+    //         color="secondary"
+    //         fontWeight="medium"
+    //         pr={3}
+    //       >
+    //         Edit
+    //       </MKTypography>
+    //     ),
+    //   },
+    //   {
+    //     book: <Book title="111" description="111" />,
+    //     action: (
+    //       <MKTypography
+    //         component="a"
+    //         href="/books/3"
+    //         variant="caption"
+    //         color="secondary"
+    //         fontWeight="medium"
+    //         pr={3}
+    //       >
+    //         Edit
+    //       </MKTypography>
+    //     ),
+    //   },
+    // ];
 
     return (
       <>
@@ -203,19 +227,31 @@ export default class BookList extends Component {
               </Grid>
             </Grid>
             <Grid container justifyContent="center" py={5}>
-              <Container>
-                <Grid container item xs={12} lg={10} mx="auto">
-                  <MKAvatar src={nobooks} alt="bookname" shadow="md" variant="rounded" />
-                  <MKBox pl={2} lineHeight={0}>
-                    <MKTypography component="h6" variant="button" fontWeight="medium" gutterBottom>
-                      bookname
-                    </MKTypography>
-                    <MKTypography variant="caption" color="text">
-                      description
-                    </MKTypography>
-                  </MKBox>
-                </Grid>
-              </Container>
+              {currentBook ? (
+                <Container>
+                  <Grid container item xs={12} lg={10} mx="auto">
+                    <MKAvatar src={cover} alt="bookname" shadow="md" variant="rounded" />
+                    <MKBox pl={2} lineHeight={0}>
+                      <MKTypography
+                        component="h6"
+                        variant="button"
+                        fontWeight="medium"
+                        gutterBottom
+                      >
+                        {currentBook.title}
+                      </MKTypography>
+                      <MKTypography component="h6" variant="caption" color="text">
+                        {currentBook.description}
+                      </MKTypography>
+                      <MKTypography variant="button" color="text">
+                        {currentBook.available ? "Available" : "Lent"}
+                      </MKTypography>
+                    </MKBox>
+                  </Grid>
+                </Container>
+              ) : (
+                ""
+              )}
             </Grid>
             <Grid container justifyContent="center" py={5}>
               {books.length > 0 ? (
@@ -237,36 +273,6 @@ export default class BookList extends Component {
               )}
             </Grid>
             <Grid container justifyContent="center">
-              <ul className="list-group">
-                {books.length > 0 ? (
-                  books.map((book, index) => (
-                    <li
-                      className={"list-group-item " + (index === currentIndex ? "active" : "")}
-                      onClick={() => this.setActiveBook(book, index)}
-                      key={index}
-                    >
-                      <div className="left">{book.title}</div>
-                      <div className="right">
-                        <Link to={"/books/" + book.id} className="badge badge-warning">
-                          Edit
-                        </Link>
-                      </div>
-                    </li>
-                  ))
-                ) : (
-                  <MKBox
-                    component="img"
-                    src={nobooks}
-                    alt="No books"
-                    maxWidth="15rem"
-                    width="100%"
-                    margin="10% 0"
-                    display={{ xs: "none", lg: "block" }}
-                  />
-                )}
-              </ul>
-            </Grid>
-            <Grid container justifyContent="center">
               <Stack direction="row" alignItems="flex-end" spacing={1}>
                 <Link to={"/books/add"}>
                   <MKButton color="info"> Add Book </MKButton>
@@ -282,40 +288,6 @@ export default class BookList extends Component {
             </Grid>
           </Container>
         </MKBox>
-        <div className="list row">
-          {currentBook ? (
-            <div className="col-md-12 mb-5">
-              <div className="row books-row">
-                <div className="col-3">
-                  <div className="cover" />
-                </div>
-                <div className="col-9">
-                  <h4>Book</h4>
-                  <div>
-                    <label>
-                      <strong>Title:</strong>
-                    </label>{" "}
-                    {currentBook.title}
-                  </div>
-                  <div>
-                    <label>
-                      <strong>Description:</strong>
-                    </label>{" "}
-                    {currentBook.description}
-                  </div>
-                  <div>
-                    <label>
-                      <strong>Availability:</strong>
-                    </label>{" "}
-                    {currentBook.available ? "Available" : "Lent"}
-                  </div>
-                </div>
-              </div>
-            </div>
-          ) : (
-            ""
-          )}
-        </div>
       </>
     );
   }
