@@ -1,3 +1,39 @@
+## Inspiration
+
+The Material Kit Pro 2 React is a nice template and I would like to use it a make a web app.
+
+## What it does
+
+It is a simple CRUD app where you can keep track of a book in a library.
+
+## How we built it
+
+I used the Material Kit Creative-Tim template and demo book sample to build this app.
+
+## Challenges we ran into
+
+Initially I have some problems using the platform because I kept getting the deployment failure error.
+
+## Accomplishments that we're proud of
+
+I managed to a CRUD app with a React template.
+
+## What we learned
+
+I learnt how to deploy in bunnyshell environment and using docker compose for local development.
+
+
+## What's next for bunnyshell + material kit 2 pro react
+
+Adding more pages which connect to a backend and db.
+
+
+
+# _Below are the original texts of the Bunnyshell Books - Demo App_ #
+
+
+
+
 # Bunnyshell Books - Demo App
 
 This app is a CRUD example, composed out of a frontend, one backend service and one database.
